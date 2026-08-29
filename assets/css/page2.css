@@ -1,0 +1,183 @@
+/* ── PAGE 2 · WHAT IS IEKEI RAMEN? ───────────────────────────────────── */
+
+.p2{background:var(--ink)}
+.shell{width:100%;max-width:var(--shell);margin-inline:auto;overflow:hidden}
+
+.red{color:var(--red-hot)}
+
+/* reveals */
+[data-rv]{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+[data-rv].is-in{opacity:1;transform:none}
+
+/* back chip — same pill as .exit, mirrored to the left */
+.back{right:auto;left:12px;z-index:40}
+
+/* ── HERO ─────────────────────────────────────────────────────────── */
+.hero{
+  position:relative;
+  padding:calc(var(--safe-t) + 58px) 0 12px;
+  overflow:hidden;isolation:isolate;
+}
+.hero__figure{
+  position:relative;margin:0;
+  display:flex;flex-direction:column;align-items:center;
+}
+.hero__glow{
+  position:absolute;z-index:0;
+  left:50%;top:34%;width:150%;aspect-ratio:1;
+  transform:translate(-50%,-32%);
+  background:radial-gradient(closest-side,rgba(215,19,42,.42),rgba(215,19,42,.12) 48%,transparent 72%);
+  filter:blur(8px);
+  animation:bloom2 1.2s ease-out both, breathe2 7s 1.2s ease-in-out infinite;
+}
+@keyframes bloom2{from{opacity:0;transform:translate(-50%,-32%) scale(.65)}to{opacity:1;transform:translate(-50%,-32%) scale(1)}}
+@keyframes breathe2{0%,100%{opacity:.85}50%{opacity:1}}
+
+.hero__brush{
+  position:relative;z-index:2;
+  width:min(76vw,308px);height:auto;   /* aspect preserved, never cropped */
+  margin:0 auto 6px;
+  filter:drop-shadow(0 4px 18px rgba(0,0,0,.85));
+  animation:fadeUp .9s .18s ease-out both;
+}
+.hero__img{
+  position:relative;z-index:1;
+  width:min(102%,500px);height:auto;
+  margin-inline:auto;
+  filter:drop-shadow(0 26px 40px rgba(0,0,0,.7));
+  animation:bowlIn2 1.1s cubic-bezier(.16,.84,.3,1) both;
+}
+@keyframes bowlIn2{
+  from{opacity:0;transform:translateY(16px) scale(1.05)}
+  to  {opacity:1;transform:none}
+}
+.hero__type{
+  position:relative;z-index:2;
+  padding:0 var(--gut);
+  margin-top:10px;
+  animation:fadeUp .9s .3s ease-out both;
+}
+.hero__h1{
+  margin-top:10px;
+  font-size:var(--d2);
+  line-height:.86;
+  text-shadow:0 6px 30px rgba(0,0,0,.6);
+}
+.hero__h1 em{font-style:normal;color:var(--red-hot)}
+.hero__scroll{
+  position:relative;z-index:2;margin-top:20px;padding:0 var(--gut);
+  font-family:var(--accent);font-size:var(--t5);letter-spacing:.34em;text-transform:uppercase;
+  color:var(--mute);
+}
+.hero__scroll::after{
+  content:"";display:block;width:1px;height:26px;margin-top:8px;
+  background:linear-gradient(180deg,var(--red-hot),transparent);
+  transform-origin:top;
+  animation:drop 2s ease-in-out infinite;
+}
+@keyframes drop{0%,100%{transform:scaleY(.4);opacity:.5}50%{transform:scaleY(1);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ── WHAT IS IN THE BOWL ──────────────────────────────────────────── */
+.what{position:relative;padding:28px var(--gut) 56px}
+.what__list{list-style:none;margin:0;padding:0;border-top:1px solid rgba(255,255,255,.12)}
+.what__list li{
+  border-bottom:1px solid rgba(255,255,255,.12);
+  padding:11px 0 12px;
+  display:flex;align-items:baseline;gap:12px;
+}
+.what__list li::before{
+  content:"";flex:0 0 auto;width:7px;height:7px;background:var(--red);transform:rotate(45deg)
+}
+.what__list b{
+  font-family:var(--display);font-weight:400;text-transform:uppercase;
+  font-size:var(--d6);letter-spacing:.012em;line-height:1;
+}
+.what__list li:nth-child(2){transition-delay:.06s}
+.what__list li:nth-child(3){transition-delay:.12s}
+.what__list li:nth-child(4){transition-delay:.18s}
+.what__list li:nth-child(5){transition-delay:.24s}
+
+.what__say{
+  margin-top:34px;
+  font-size:var(--d5);line-height:.98;
+  transition-delay:.1s;
+}
+.what__brush{
+  position:absolute;right:-4px;bottom:30px;
+  width:clamp(44px,12vw,60px);height:auto;
+}
+.what__brush.is-in{opacity:.34}
+
+/* ── THE FIVE · one shared system, all left-aligned ────────────────── */
+.five{padding-bottom:8px}
+.bit{position:relative;margin-bottom:56px}
+
+/* visual — full-bleed, natural aspect */
+.bit__fig{margin:0;position:relative;overflow:hidden}
+.bit__fig img{
+  width:100%;height:auto;display:block;
+  aspect-ratio:1000/560;          /* 01–05 all share 05's crop height */
+  object-fit:cover;object-position:center;
+}
+
+/* number + title + body — identical placement in every section */
+.bit__body{position:relative;padding:0 var(--gut);margin-top:-26px;text-align:left}
+.num{
+  font-family:var(--display);
+  font-size:var(--d3);line-height:.8;letter-spacing:.02em;
+  color:var(--red);
+  text-shadow:0 4px 22px rgba(0,0,0,.8);
+}
+.bit__h{margin-top:1px;font-size:var(--d4);line-height:.9}
+.bit__p{
+  margin-top:12px;max-width:34ch;
+  font-size:var(--t2);line-height:1.55;color:var(--mute);
+}
+.bit__p em{font-style:italic;color:rgba(255,255,255,.85)}
+
+/* ── CRAFT ────────────────────────────────────────────────────────── */
+.craft{position:relative;margin:8px 0 0;overflow:hidden;isolation:isolate}
+.craft__img{width:100%;height:auto;display:block}
+.craft__veil{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,var(--ink) 0%,transparent 13%,transparent 64%,rgba(10,7,8,.55) 88%,var(--ink) 100%);
+}
+.craft__brush{
+  position:absolute;left:50%;bottom:5%;transform:translateX(-50%);
+  width:min(76%,308px);height:auto;
+  filter:drop-shadow(0 6px 18px rgba(0,0,0,.8));
+}
+
+/* ── CLOSING ──────────────────────────────────────────────────────── */
+.end{position:relative;padding:6px var(--gut) calc(var(--safe-b) + 46px);text-align:center}
+.end__bowl{
+  width:min(84%,340px);height:auto;margin:0 auto;
+  filter:drop-shadow(0 26px 40px rgba(0,0,0,.65));
+}
+.end__say{
+  margin-top:14px;font-size:var(--d5);line-height:1.02;
+}
+.end__out{
+  margin:34px auto 0;max-width:400px;
+  padding-top:26px;
+  border-top:1px solid rgba(255,255,255,.14);
+}
+.end__logo{width:min(78%,280px);height:auto;margin:14px auto 22px}
+.end__cta{
+  display:block;background:var(--red);color:#fff;
+  padding:16px 18px 17px;border-radius:2px;
+  font-family:var(--display);text-transform:uppercase;letter-spacing:.03em;
+  font-size:var(--d6);line-height:1;
+  box-shadow:0 10px 26px rgba(215,19,42,.4);
+  transition:transform .12s ease,background .2s ease;
+}
+.end__cta:active{transform:scale(.985)}
+.end__cta:focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+@media (min-width:760px){
+  body.p2{background:#050405}
+  .shell{box-shadow:0 0 90px rgba(0,0,0,.85)}
+  .back{left:calc(50% - var(--shell)/2 + 12px)}
+  .exit{right:calc(50% - var(--shell)/2 + 12px)}
+}

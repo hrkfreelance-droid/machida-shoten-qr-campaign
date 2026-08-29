@@ -1,0 +1,109 @@
+/* ── Machida Shoten Cambodia — opus-v1 · shared foundation ───────────── */
+
+:root{
+  --ink:#0a0708;          /* near-black ground        */
+  --red:#d7132a;          /* Machida Shoten red       */
+  --red-hot:#ff2b3d;
+  --white:#ffffff;
+  --mute:rgba(255,255,255,.62);
+  --edge:rgba(255,255,255,.14);
+
+  --display:"Anton","Arial Narrow",Impact,sans-serif;
+  --body:"DM Sans","Helvetica Neue",Arial,sans-serif;
+  --accent:"American Typewriter",Rockwell,"Courier New",Georgia,serif;
+
+  /* ── type ladder ── one scale, both pages. @390px in comments ─────── */
+  --d1:clamp(62px,19.2vw,84px);   /* 75 · PAGE 1 offer headline          */
+  --d2:clamp(52px,17vw,78px);     /* 66 · PAGE 2 page title              */
+  --d3:clamp(48px,14vw,64px);     /* 55 · section numbers                */
+  --d4:clamp(36px,10.8vw,48px);   /* 42 · section titles                 */
+  --d5:clamp(27px,8.2vw,38px);    /* 32 · statements                     */
+  --d6:clamp(19px,5.7vw,25px);    /* 22 · display sub-heads / buttons    */
+
+  --t1:clamp(15px,4.3vw,18px);    /* 17 · badge                          */
+  --t2:clamp(14px,4vw,16px);      /* 16 · body                           */
+  --t3:clamp(13px,3.7vw,15px);    /* 14 · small body                     */
+  --t4:11px;                      /* 11 · micro label                    */
+  --t5:9px;                       /* 9  · utility chip                   */
+
+  --gut:clamp(20px,5.6vw,28px);
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --shell:520px;          /* mobile design, centred on desktop */
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--ink);
+  color:var(--white);
+  font-family:var(--body);
+  line-height:1.5;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+h1,h2,h3,p{margin:0}
+
+.display{
+  font-family:var(--display);
+  font-weight:400;
+  line-height:.86;
+  letter-spacing:.005em;
+  text-transform:uppercase;
+}
+.kicker{
+  font-family:var(--accent);
+  font-size:var(--t4);
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--mute);
+}
+.u-vis-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* fixed utility exit — identical on both pages */
+.chip,.exit{
+  position:fixed;z-index:40;
+  top:calc(var(--safe-t) + 12px);right:12px;
+  padding:7px 11px 8px;
+  font-family:var(--accent);
+  font-size:var(--t5);letter-spacing:.13em;text-transform:uppercase;
+  color:rgba(255,255,255,.88);
+  background:rgba(10,7,8,.66);
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  white-space:nowrap;
+  transition:border-color .2s ease,color .2s ease;
+}
+.exit span{color:var(--red);margin-left:2px}
+.chip:active,.exit:active{border-color:rgba(255,255,255,.42)}
+.chip:focus-visible,.exit:focus-visible{outline:2px solid var(--red-hot);outline-offset:3px}
+
+/* the pill stays visually small; the touch target does not */
+.chip::after,.exit::after{
+  content:"";position:absolute;inset:-7px -8px;
+}
+
+/* PAGE 1 places the same chip in the flow, just above the offer eyebrow */
+.exit--inline{
+  position:relative;display:inline-block;
+  margin-bottom:20px;
+}
+
+/* page-to-page wipe */
+.wipe{
+  position:fixed;inset:0;background:var(--ink);z-index:99;
+  opacity:0;pointer-events:none;transition:opacity .28s ease;
+}
+.wipe.is-on{opacity:1;pointer-events:auto}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;scroll-behavior:auto !important;
+  }
+}
