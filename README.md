@@ -3,6 +3,10 @@
 Machida Shoten Cambodia QR campaign. The current version is `opus-v1`,
 including the white sweep effect across the `Free / Angkor / Draft` headline.
 
+## Preview
+
+[Open the live GitHub Pages preview](https://hrkfreelance-droid.github.io/machida-shoten-qr-campaign/)
+
 ## GitHub
 
 [Open the GitHub repository](https://github.com/hrkfreelance-droid/machida-shoten-qr-campaign)
