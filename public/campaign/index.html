@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Machida Shoten Cambodia — Iekei Ramen</title>
+<meta name="description" content="Machida Shoten Cambodia — an exclusive QR offer and a visual introduction to Iekei ramen.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="assets/css/style.css?v=3">
+</head>
+<body data-step="1">
+
+  <!-- PAGE 1 — QR campaign, kept independent from v1/v2. -->
+  <main id="step1" class="screen screen--campaign" aria-hidden="false">
+    <div class="campaign-bg" aria-hidden="true"></div>
+    <div class="light-streak" aria-hidden="true"></div>
+    <canvas id="sparkCanvas" class="campaign-particles" aria-hidden="true"></canvas>
+
+    <button type="button" class="close-btn" id="closeBtn1" aria-label="Close and go to Machida Shoten Cambodia">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 5L19 19M19 5L5 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </button>
+
+    <!-- DUMMY / TBC: Angkor Draft offer, dates, terms and eligible stores are
+         placeholders pending official confirmation. -->
+    <div class="campaign-inner">
+      <img class="campaign-logo anim-logo" src="assets/img/logo-machida-shoten.svg" width="290" height="45" alt="Machida Shoten — Japanese Ramen">
+
+      <div class="campaign-visual" aria-hidden="true">
+        <div class="ramen-aura"></div>
+        <div class="hero-shockwave"></div>
+        <img class="anim-ramen" src="assets/img/hero-bowl.webp" srcset="assets/img/hero-bowl.webp 900w, assets/img/hero-bowl@2x.webp 1400w" sizes="(min-width:640px) 420px, 74vw" width="900" height="824" alt="" fetchpriority="high">
+      </div>
+
+      <div class="campaign-copy">
+        <p class="eyebrow">Exclusive QR Offer</p>
+        <h1 class="headline"><span class="word anim-free" data-text="FREE">FREE</span><br><span class="word anim-angkor" data-text="ANGKOR DRAFT">ANGKOR&nbsp;DRAFT</span></h1>
+        <p class="subcopy">1 glass on us.</p>
+        <p class="microcopy">Show this screen at Machida Shoten Cambodia</p>
+      </div>
+
+      <div class="campaign-cta">
+        <button type="button" class="btn-next anim-next" id="nextBtn">
+          <span>WHAT IS IEKEI RAMEN?</span>
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </button>
+        <p class="disclaimer">Campaign details to be confirmed.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- PAGE 2 — one-to-one poster transfer of 2page/sample.pdf. -->
+  <main id="step2" class="screen screen--iekei" aria-hidden="true" hidden>
+    <button type="button" class="close-btn close-btn--dark" id="closeBtn2" aria-label="Close and go to Machida Shoten Cambodia">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 5L19 19M19 5L5 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </button>
+
+    <section class="p2-poster" aria-labelledby="p2-hero-title">
+      <img class="p2-top-logo" src="assets/img/p2-closing-logo.svg" alt="ラーメン町田商店">
+      <img class="p2-no-ramen" src="assets/img/p2-no-ramen.svg" alt="NO RAMEN! NO LIFE!!">
+      <img class="p2-hero-img" src="assets/img/p2-hero.webp" alt="A steaming bowl of Iekei ramen with nori, spinach, eggs and chashu">
+      <img class="p2-tonkotsu" src="assets/img/p2-tonkotsu.svg" alt="濃厚豚骨">
+
+      <header class="p2-hero-copy">
+        <p>What is</p>
+        <h2 id="p2-hero-title"><span>IEKEI</span><br>Ramen?</h2>
+        <p class="p2-accent">Bold. Rich.<br>Made Your Way.</p>
+      </header>
+
+      <img class="p2-chef" src="assets/img/p2-chef.webp" alt="Machida Shoten chef preparing ramen">
+      <img class="p2-kansha" src="assets/img/p2-kansha.svg" alt="感謝">
+
+      <div class="p2-facts" aria-label="Iekei ramen ingredients">
+        <span>Rich Pork &amp;<br>Chicken Broth</span>
+        <span>Soy Sauce</span>
+        <span>Thick Noodles</span>
+        <span>Spinach</span>
+        <span>Nori Seaweed</span>
+      </div>
+
+      <p class="p2-statement">A Powerful,<br>Deeply Satisfying Bowl<br>Of Japanese Ramen.</p>
+
+      <article class="p2-feature p2-feature--01">
+        <img src="assets/img/p2-noodles.webp" alt="Bundles of thick Iekei ramen noodles">
+        <h3><span>01</span> SIGNATURE NOODLES</h3>
+        <p>Chewy, medium-thick noodles made to<br>pair perfectly with our rich broth.</p>
+      </article>
+
+      <article class="p2-feature p2-feature--02">
+        <img src="assets/img/p2-soysauce.webp" alt="Soy sauce tare being prepared with a brush">
+        <h3><span>02</span> SECRET SOY SAUCE</h3>
+        <p>A bold, deeply flavorful soy-based tare<br>crafted for Iekei ramen.</p>
+      </article>
+
+      <article class="p2-feature p2-feature--03">
+        <img src="assets/img/p2-broth.webp" alt="Rich broth being poured over ramen toppings">
+        <h3><span>03</span> RICH &amp; CREAMY BROTH</h3>
+        <p>Pork bones and chicken simmered<br>for hours for a rich, creamy flavor.</p>
+      </article>
+
+      <article class="p2-feature p2-feature--04">
+        <img src="assets/img/p2-makeyourway.webp" alt="Ramen bowl with red spoon and chopsticks">
+        <h3><span>04</span> MAKE IT YOUR WAY</h3>
+        <p>Customize your bowl with toppings<br>and seasonings to find your perfect taste.</p>
+      </article>
+
+      <article class="p2-feature p2-feature--05">
+        <img src="assets/img/p2-rice.webp" alt="Rice lifted with chopsticks">
+        <h3><span>05</span> PERFECT WITH RICE</h3>
+        <p>Wrap rice with nori soaked in the rich broth<br>— a classic Iekei experience</p>
+      </article>
+
+      <footer class="p2-closing">
+        <p class="p2-closing-copy">Try It First The Classic Way.<br>Then Find Your Perfect Bowl.</p>
+        <p class="p2-welcome">Welcome To</p>
+        <img class="p2-closing-logo" src="assets/img/p2-top-logo.svg" alt="MACHIDA SHOTEN JAPANESE RAMEN">
+        <img class="p2-welcome-img" src="assets/img/p2-welcome.webp" alt="Machida Shoten ramen bowl">
+        <a class="p2-menu" id="menuLocationBtn" href="https://machida-shoten-cambodia.netlify.app/">Menu &amp; Location <span>&gt;</span></a>
+      </footer>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="assets/js/app.js?v=3"></script>
+</body>
+</html>

@@ -1,0 +1,1044 @@
+/* Machida Shoten Cambodia — QR Campaign v2 (FX-enhanced variant, Step 1 only)
+   DUMMY / TBC: Angkor Draft offer, campaign terms and Cambodia-store
+   customization options are placeholders pending official confirmation.
+   This file is a v2-only copy — v1/campaign/assets/css/style.css is untouched. */
+
+:root{
+  --red: #d40d18;
+  --red-deep: #8f0009;
+  --black: #0a0a0a;
+  --ink: #141110;
+  --paper: #f6f3ef;
+  --paper-dim: #efe9e1;
+  --line: rgba(255,255,255,.14);
+  --font: 'American Typewriter', Georgia, 'Times New Roman', serif;
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+}
+
+*{ box-sizing: border-box; }
+html,body{ margin:0; padding:0; }
+body{
+  font-family: var(--font);
+  background: var(--black);
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img{ max-width:100%; display:block; }
+button, a{ font-family: inherit; }
+
+/* ---------- shared screen shell ---------- */
+.screen{ width:100%; }
+[hidden]{ display:none !important; }
+
+.close-btn{
+  position: fixed;
+  top: calc(14px + var(--safe-t));
+  right: calc(14px + var(--safe-r));
+  z-index: 40;
+  width: 44px; height: 44px;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 999px;
+  color: #fff;
+  cursor:pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* v2 only: nudge Step 1's close button down 14px (within the 12-16px
+   requested range); Step 2's close button (#closeBtn2) is untouched. */
+#closeBtn1{
+  top: calc(14px + 14px + var(--safe-t));
+}
+.close-btn:hover{ background: rgba(255,255,255,.16); }
+.close-btn:focus-visible{ outline: 2px solid #fff; outline-offset: 2px; }
+.close-btn--dark{
+  background: rgba(10,10,10,.35);
+  border-color: rgba(10,10,10,.35);
+  color:#fff;
+  backdrop-filter: blur(6px);
+}
+
+/* ================= STEP 1 — CAMPAIGN ================= */
+.screen--campaign{
+  position: fixed; inset:0;
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--black);
+}
+.campaign-bg{
+  position:absolute; inset:0;
+  overflow:hidden;
+  background: var(--black);
+}
+.campaign-bg::before,
+.campaign-bg::after{
+  content:"";
+  position:absolute;
+  left:50%; top:50%;
+  width:150vmax; height:150vmax;
+  transform: translate(-50%,-50%);
+  pointer-events:none;
+}
+.campaign-bg::before{
+  background: radial-gradient(38% 30% at 50% 92%, rgba(212,13,24,.6) 0%, rgba(212,13,24,0) 60%);
+  animation: bgGlowDrift 10s ease-in-out infinite;
+}
+.campaign-bg::after{
+  background: radial-gradient(45% 30% at 50% 4%, rgba(255,255,255,.07) 0%, rgba(255,255,255,0) 60%);
+}
+@keyframes bgGlowDrift{
+  0%, 100%{ transform: translate(-52%,-49%); }
+  50%{ transform: translate(-48%,-51%); }
+}
+
+/* brief, once-only radial brightening behind the bowl on first load —
+   "energy spreading", not a flash or explosion */
+.light-streak{
+  position:absolute; inset:0;
+  z-index: 0;
+  pointer-events:none;
+  opacity:0;
+  background: radial-gradient(46% 34% at 50% 68%, rgba(255,190,150,.32) 0%, rgba(255,90,60,.14) 30%, rgba(212,13,24,0) 62%);
+  animation: streakFade .6s ease-out .1s 1 both;
+}
+@keyframes streakFade{
+  0%{ opacity:0; }
+  35%{ opacity:1; }
+  100%{ opacity:0; }
+}
+.campaign-inner{
+  position:relative;
+  z-index: 2;
+  height: 100%;
+  display:grid;
+  grid-template-rows: auto 1fr auto auto;
+  align-items:center;
+  justify-items:center;
+  text-align:center;
+  padding:
+    calc(16px + var(--safe-t))
+    calc(20px + var(--safe-r))
+    calc(14px + var(--safe-b))
+    calc(20px + var(--safe-l));
+  gap: clamp(4px, 1.4svh, 14px);
+}
+.campaign-logo{
+  width: clamp(252px, 38vw, 340px);
+  height: auto;
+  margin-top: 4px;
+}
+/* v2 mobile only: run the logo to the available width, left-aligned, capped
+   short of the close button so they never overlap. Desktop (>=860px) keeps
+   the rule above unchanged. Height still follows the SVG's own aspect
+   ratio (no crop/stretch) — this width range lands it close to the CTA
+   button's rendered height. */
+@media (max-width: 859px){
+  .campaign-logo{
+    justify-self: start;
+    width: clamp(240px, calc(100% - 46px), 420px);
+    margin-top: 6px;
+  }
+}
+.campaign-visual{
+  position: relative;
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  min-height: 0;
+}
+.campaign-visual img{
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  max-height: clamp(170px, 42svh, 380px);
+  width: auto;
+  max-width: 86vw;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
+}
+
+/* red spotlight glow behind the bowl — not applied to the PNG itself.
+   Stronger than v1: wider spread, deeper opacity swing. */
+.ramen-aura{
+  position:absolute;
+  left:50%; bottom: 6%;
+  width: min(88vw, 460px);
+  height: min(88vw, 460px);
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(255,40,40,.62) 0%, rgba(212,13,24,.4) 38%, rgba(143,0,9,.22) 58%, rgba(212,13,24,0) 74%);
+  filter: blur(20px);
+  z-index: 0;
+  pointer-events: none;
+  animation: auraPulse 3.6s ease-in-out infinite;
+}
+@keyframes auraPulse{
+  0%, 100%{ opacity:.5; transform: translateX(-50%) scale(.94); }
+  50%{ opacity:1; transform: translateX(-50%) scale(1.07); }
+}
+
+/* one-time impact ring behind the bowl on first load only — plays once
+   automatically (iteration-count 1), never repeats, no white flash */
+.hero-shockwave{
+  position:absolute;
+  left:50%; bottom: 22%;
+  width: 60px; height: 60px;
+  margin-left: -30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,70,55,.85) 0%, rgba(212,13,24,.5) 40%, rgba(212,13,24,0) 72%);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  animation: shockwave .48s cubic-bezier(.2,.7,.3,1) .12s 1 both;
+}
+@keyframes shockwave{
+  0%{ opacity:.85; transform: scale(.25); }
+  55%{ opacity:.45; }
+  100%{ opacity:0; transform: scale(4.2); }
+}
+
+/* sparse ember particles — behind the bowl/text, above the background glow */
+.campaign-particles{
+  position:absolute; inset:0;
+  z-index: 1;
+  pointer-events:none;
+}
+.campaign-copy{ display:grid; gap: clamp(2px,.8svh,8px); justify-items:center; }
+.eyebrow{
+  margin:0;
+  font-size: clamp(.68rem, 2.6vw, .8rem);
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color: #ffd7d2;
+  font-weight:700;
+}
+.headline{
+  margin:0;
+  font-weight:900;
+  line-height: .96;
+  letter-spacing: -.01em;
+  font-size: clamp(2.15rem, 10.5vw, 3.4rem);
+  text-shadow: 0 6px 26px rgba(0,0,0,.4);
+}
+.headline .word{ position:relative; display:inline-block; }
+.headline .word::after{
+  content: attr(data-text);
+  position:absolute; inset:0;
+  background-image: linear-gradient(115deg, transparent 38%, rgba(255,244,222,.95) 50%, transparent 62%);
+  background-size: 260% 100%;
+  background-position: -130% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  pointer-events: none;
+  animation: shimmerSweep 6s ease-in-out 2.8s infinite;
+}
+@keyframes shimmerSweep{
+  0%{ background-position: -130% 0; }
+  10%{ background-position: 130% 0; }
+  100%{ background-position: 130% 0; }
+}
+.subcopy{
+  margin:0;
+  font-size: clamp(1rem, 3.6vw, 1.25rem);
+  font-weight:600;
+  color: #fff;
+  opacity:.92;
+}
+.microcopy{
+  margin:0;
+  font-size: clamp(.72rem, 2.6vw, .84rem);
+  color: rgba(255,255,255,.6);
+}
+.campaign-cta{ width:100%; max-width: 420px; display:grid; justify-items:center; gap:8px; }
+.btn-next{
+  width:100%;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  padding: clamp(13px, 3.4svh, 17px) 22px;
+  min-height: 52px;
+  background: var(--red);
+  color:#fff;
+  border:none;
+  border-radius: 14px;
+  /* v2: longer CTA copy ("WHAT IS IEKEI RAMEN?") needs a smaller, more
+     flexible range than v1's "NEXT" to always stay on one line. */
+  font-size: clamp(.72rem, 4.4vw, 1.1rem);
+  font-weight:800;
+  letter-spacing:.01em;
+  cursor:pointer;
+  box-shadow: 0 10px 26px rgba(212,13,24,.4);
+  animation: btnPulse 2.4s ease-in-out infinite;
+}
+.btn-next span{ white-space:nowrap; }
+.btn-next svg{ flex-shrink:0; }
+.btn-next:hover{ background:#c00b15; }
+.btn-next:focus-visible{ outline:2px solid #fff; outline-offset:3px; }
+.btn-next svg{ transition: transform .2s ease; }
+.btn-next:hover svg{ transform: translateX(3px); }
+@keyframes btnPulse{
+  0%, 100%{ box-shadow: 0 10px 26px rgba(212,13,24,.4), 0 0 0 rgba(212,13,24,0); transform: scale(1); }
+  50%{ box-shadow: 0 12px 34px rgba(212,13,24,.62), 0 0 30px 9px rgba(212,13,24,.42); transform: scale(1.01); }
+}
+
+/* gentle float, enabled by JS only after entrance completes */
+.anim-ramen.is-floating{ animation: ramenFloat 5s ease-in-out infinite; }
+@keyframes ramenFloat{
+  0%, 100%{ transform: translateY(0); }
+  50%{ transform: translateY(-3px); }
+}
+.disclaimer{
+  margin:0;
+  font-size: .68rem;
+  color: rgba(255,255,255,.4);
+}
+
+/* step transition */
+.screen--campaign{ transition: opacity .32s ease, transform .32s ease; }
+.screen--campaign.is-leaving{ opacity:0; transform: translateY(-14px) scale(.98); }
+.screen--iekei{ animation: iekeiIn .32s ease both; }
+@keyframes iekeiIn{ from{ opacity:0; transform: translateY(14px);} to{opacity:1; transform:none;} }
+
+@media (prefers-reduced-motion: reduce){
+  .screen--campaign, .screen--iekei, .btn-next svg,
+  .ramen-aura, .btn-next, .anim-ramen.is-floating, .headline .word::after,
+  .campaign-bg::before, .campaign-bg::after, .light-streak, .hero-shockwave{
+    transition:none !important; animation:none !important;
+  }
+  .ramen-aura{ opacity:.5; }
+  .headline .word::after{ display:none; }
+  .campaign-particles{ display:none; }
+  .light-streak, .hero-shockwave{ opacity:0 !important; }
+}
+
+/* ================= STEP 2 — IE-KEI ================= */
+.screen--iekei{
+  position:relative;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100svh;
+}
+
+.iekei-intro{
+  padding:
+    calc(64px + var(--safe-t)) calc(22px + var(--safe-r)) 40px calc(22px + var(--safe-l));
+  background: var(--black);
+  color:#fff;
+  text-align:center;
+}
+.iekei-logo{ width: 190px; margin: 0 auto 22px; opacity:.95; }
+.iekei-h1{
+  margin: 0 0 14px;
+  font-weight:900;
+  font-size: clamp(2rem, 8vw, 2.8rem);
+  line-height:1.02;
+  letter-spacing:-.01em;
+}
+.iekei-lead{
+  max-width: 34em;
+  margin: 0 auto 34px;
+  font-size: clamp(.95rem, 3.6vw, 1.05rem);
+  line-height:1.55;
+  color: rgba(255,255,255,.82);
+}
+
+/* ================= Poster-style redesign (page 1 of the Iekei
+   explainer only) — PDF reference: black bg, huge condensed headline,
+   red accents, photo/type collision, dense poster composition. ================= */
+.iekei-intro--poster{
+  padding-top: calc(40px + var(--safe-t));
+  padding-bottom: 30px;
+  text-align: left;
+  overflow: hidden;
+}
+.iekei-intro--poster .iekei-logo{ margin: 0 auto 18px; }
+
+.poster-hero{ margin: 0 0 4px; }
+.poster-kicker{
+  margin: 0;
+  font-family: var(--font);
+  font-size: clamp(1.05rem, 4.6vw, 1.4rem);
+  letter-spacing:.07em;
+  text-transform: uppercase;
+  color:#fff;
+}
+.poster-h1{
+  margin: -4px 0 -8px;
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: clamp(4.4rem, 25vw, 7.4rem);
+  line-height: .8;
+  letter-spacing: .005em;
+  color: var(--red);
+  text-shadow: 0 0 36px rgba(212,13,24,.4);
+}
+.poster-h2{
+  margin: 0;
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: clamp(2.3rem, 12.5vw, 3.6rem);
+  line-height: .92;
+  color:#fff;
+}
+
+/* full-bleed-to-edge photo — cancels the section's own side padding */
+.poster-photo{
+  margin: -2px calc(-22px - var(--safe-r)) 2px calc(-22px - var(--safe-l));
+  display:flex;
+  justify-content:center;
+  pointer-events:none;
+}
+.poster-photo img{
+  width:100%;
+  max-width: 640px;
+  max-height: clamp(220px, 42vh, 440px);
+  object-fit: contain;
+  filter: drop-shadow(0 20px 42px rgba(0,0,0,.6));
+}
+
+/* ingredient facts as staggered poster typography, not a card grid */
+.poster-ingredients{
+  margin: 6px 0 26px;
+  display:flex;
+  flex-direction:column;
+  gap: 9px;
+}
+.pi-item{
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+  max-width: 80%;
+}
+.pi-item.pi-r{ align-self:flex-end; text-align:right; }
+.pi-label{
+  display:block;
+  font-weight:800;
+  font-size: clamp(.92rem, 4vw, 1.1rem);
+  letter-spacing:.01em;
+  color: var(--red);
+  text-transform: uppercase;
+}
+.pi-sub{
+  display:block;
+  font-size: clamp(.68rem, 2.5vw, .76rem);
+  color: rgba(255,255,255,.5);
+}
+
+/* main statement — larger than body copy */
+.poster-statement{
+  margin: 0 0 10px;
+  font-family: var(--font);
+  font-weight:400;
+  font-size: clamp(1.65rem, 8vw, 2.4rem);
+  line-height: 1.04;
+  letter-spacing:.005em;
+  color:#fff;
+}
+.poster-statement span{ color: var(--red); }
+
+.iekei-lead--poster{
+  text-align:left;
+  margin: 0 0 22px;
+  max-width: 42em;
+}
+
+/* transition line — system-font accent serif only, never the whole page */
+.poster-transition{
+  margin: 4px 0 0;
+  font-family: 'American Typewriter', Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.05rem, 4.6vw, 1.3rem);
+  line-height: 1.25;
+  color: var(--red);
+}
+
+/* ================================================================
+   Page 2 — Iekei explainer, 01–05 (sample.pdf reference)
+   Scoped entirely under .p2 so it can never leak into other pages
+   or other sections. v2-only file — v1 is untouched.
+   ================================================================ */
+.p2{
+  --impact: var(--typewriter);
+  --typewriter: 'American Typewriter', Georgia, 'Times New Roman', serif;
+  --p2-body: var(--typewriter);
+  background: var(--black);
+  color:#fff;
+  overflow:hidden;
+  padding-bottom: 8px;
+}
+.p2-media{
+  position: relative;
+  margin: 0 calc(-22px - var(--safe-r)) 0 calc(-22px - var(--safe-l));
+  overflow:hidden;
+  background:#0c0a0a;
+}
+.p2-media img{ width:100%; display:block; object-fit:cover; }
+.p2-num{
+  position: relative;
+  z-index: 1;
+  margin:0;
+  font-family: var(--typewriter);
+  font-weight:400;
+  color: var(--red);
+  line-height:.82;
+}
+.p2-title{
+  margin: 2px 0 8px;
+  font-family: var(--typewriter);
+  font-weight:400;
+  text-transform: uppercase;
+  line-height:.92;
+  letter-spacing:.005em;
+  color:#fff;
+}
+.p2-desc{
+  margin:0;
+  font-family: var(--typewriter);
+  font-weight:600;
+  font-size: clamp(.9rem, 3.6vw, 1.02rem);
+  line-height:1.32;
+  color: rgba(255,255,255,.7);
+  max-width: 30em;
+}
+
+/* -- 01 Signature Noodles: number overlaps the bottom edge of the photo -- */
+.p2-sec--01{ padding: 8px 22px 30px; }
+.p2-sec--01 .p2-media img{ aspect-ratio: 1000/641; }
+.p2-sec--01 .p2-num{
+  margin: -.32em 0 0 2px;
+  font-size: clamp(3.4rem, 17vw, 4.8rem);
+  text-shadow: 0 2px 4px rgba(0,0,0,.55);
+}
+.p2-sec--01 .p2-title{ font-size: clamp(2rem, 10vw, 2.9rem); }
+
+/* -- 02 Secret Soy Sauce: right-aligned, red carries the title this time -- */
+.p2-sec--02{ padding: 6px 22px 30px; text-align:right; }
+.p2-sec--02 .p2-media img{ aspect-ratio: 1000/641; }
+.p2-sec--02 .p2-num{
+  margin: -.3em 2px 0 0;
+  font-size: clamp(3rem, 15vw, 4.2rem);
+  color:#fff;
+}
+.p2-sec--02 .p2-title{ font-size: clamp(1.9rem, 9.5vw, 2.7rem); color: var(--red); }
+.p2-sec--02 .p2-desc{ margin-left:auto; }
+
+/* -- 03 Rich & Creamy Broth: number + brush kanji sit on the photo itself -- */
+.p2-sec--03{ padding: 6px 22px 30px; }
+.p2-sec--03 .p2-media img{ aspect-ratio: 1000/637; }
+.p2-sec--03 .p2-num--onphoto{
+  position:absolute;
+  right: 16px; bottom: 8px;
+  font-size: clamp(3rem, 15vw, 4.3rem);
+  color:#fff;
+  text-shadow: 0 2px 5px rgba(0,0,0,.7);
+}
+.p2-brush--tonkotsu{
+  position:absolute;
+  left: 10px; top: 8px;
+  height: clamp(130px, 34vw, 210px);
+  width:auto;
+  opacity:.9;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.6));
+  pointer-events:none;
+}
+.p2-sec--03 .p2-title{ margin-top:10px; font-size: clamp(1.9rem, 9.5vw, 2.7rem); }
+
+/* -- 04 Make It Your Way: full portrait photo, type lives on the image -- */
+.p2-sec--04{ padding: 6px 22px 30px; }
+.p2-sec--04 .p2-media img{ aspect-ratio: 900/1287; max-height: 62svh; }
+.p2-media-overlay{
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 42%, rgba(0,0,0,.88) 100%);
+  pointer-events:none;
+}
+.p2-onphoto-text{
+  position:absolute; left:16px; right:16px; bottom:14px;
+}
+.p2-onphoto-text .p2-num{ font-size: clamp(2.6rem, 13vw, 3.6rem); }
+.p2-onphoto-text .p2-title{ font-size: clamp(2.1rem, 10.5vw, 3rem); margin: -.08em 0 0; }
+.p2-sec--04 > .p2-desc{ margin-top:12px; }
+
+/* -- 05 Perfect With Rice: closes the sequence, biggest number -- */
+.p2-sec--05{ padding: 6px 22px 14px; }
+.p2-sec--05 .p2-media img{ aspect-ratio: 1000/569; }
+.p2-sec--05 .p2-num{
+  margin: -.34em 0 0 2px;
+  font-size: clamp(3.8rem, 19vw, 5.2rem);
+  text-shadow: 0 2px 4px rgba(0,0,0,.55);
+}
+.p2-sec--05 .p2-title{ font-size: clamp(2.1rem, 10.5vw, 3rem); }
+
+/* -- Closing: accent serif statement, brush kanji, wordmark -- */
+.p2-closing{ padding: 8px 22px 44px; text-align:center; }
+.p2-closing-statement{
+  margin: 0 0 24px;
+  font-family: var(--typewriter);
+  font-size: clamp(1.25rem, 6vw, 1.7rem);
+  line-height:1.3;
+  color:#fff;
+}
+.p2-welcome-media{ margin-bottom:14px; }
+.p2-welcome-media img{ aspect-ratio: 1000/1146; }
+.p2-brush--kansha{
+  position:absolute;
+  right: 6px; bottom: 6px;
+  height: clamp(100px, 26vw, 160px);
+  width:auto;
+  opacity:.95;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.7));
+  pointer-events:none;
+}
+.p2-welcome-kicker{
+  margin:0;
+  font-family: var(--typewriter);
+  font-size: clamp(.95rem, 4vw, 1.1rem);
+  color: rgba(255,255,255,.65);
+}
+.p2-welcome-title{
+  margin: 2px 0 0;
+  font-family: var(--typewriter);
+  font-weight:400;
+  letter-spacing:.02em;
+  font-size: clamp(1.8rem, 9vw, 2.5rem);
+  color:#fff;
+}
+
+/* Section-reveal + image-reveal on scroll — lighter than the campaign
+   page's effects, and fully inert under reduced-motion. */
+.p2-sec, .p2-closing{
+  opacity:0;
+  transform: translateY(26px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.p2-sec.is-visible, .p2-closing.is-visible{ opacity:1; transform:none; }
+.p2-sec .p2-media img{
+  transform: scale(1.04);
+  transition: transform .7s ease;
+}
+.p2-sec.is-visible .p2-media img{ transform: scale(1); }
+.p2-sec .p2-num{
+  opacity:0;
+  transform: translateY(10px);
+  transition: opacity .5s ease .12s, transform .5s ease .12s;
+}
+.p2-sec.is-visible .p2-num{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion: reduce){
+  .p2-sec, .p2-closing, .p2-sec .p2-media img, .p2-sec .p2-num{
+    opacity:1 !important; transform:none !important; transition:none !important;
+  }
+}
+
+@media (min-width: 860px){
+  .p2{ max-width: 480px; margin: 0 auto; }
+}
+
+.feature-grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 920px;
+  margin: 0 auto;
+  text-align:left;
+}
+.feature-card{
+  margin:0;
+  background: #151212;
+  border-radius: 14px;
+  overflow:hidden;
+  border: 1px solid rgba(255,255,255,.08);
+}
+.fc-media{ aspect-ratio: 1/1; overflow:hidden; background:#0d0a0a; }
+.fc-media img{ width:100%; height:100%; object-fit: cover; display:block; }
+.feature-card figcaption{ padding: 10px 10px 14px; display:grid; gap:2px; }
+.fc-title{
+  font-weight:800;
+  font-size: clamp(.68rem, 2.6vw, .82rem);
+  letter-spacing:.01em;
+  line-height:1.2;
+}
+.fc-sub{
+  font-size: clamp(.6rem, 2.1vw, .7rem);
+  color: rgba(255,255,255,.55);
+  line-height:1.3;
+}
+
+.iekei-custom{
+  padding: 52px calc(22px + var(--safe-r)) 44px calc(22px + var(--safe-l));
+  max-width: 640px;
+  margin: 0 auto;
+  text-align:center;
+}
+.section-h2{
+  margin:0 0 10px;
+  font-weight:900;
+  font-size: clamp(1.5rem, 6.5vw, 2.1rem);
+  letter-spacing:-.005em;
+}
+.section-lead{
+  margin: 0 0 28px;
+  font-size: clamp(.9rem, 3.4vw, 1rem);
+  color: rgba(20,17,16,.7);
+  line-height:1.5;
+}
+.custom-grid{ display:grid; gap:16px; text-align:left; }
+.custom-row{
+  display:grid;
+  grid-template-columns: 84px 1fr;
+  align-items:center;
+  gap: 14px;
+  background:#fff;
+  border: 1px solid rgba(20,17,16,.08);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.custom-label{
+  font-weight:800;
+  font-size: .8rem;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  color: var(--red);
+}
+.custom-scale{
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:6px;
+}
+.custom-scale span{
+  text-align:center;
+  padding: 8px 4px;
+  border-radius: 9px;
+  font-size: .78rem;
+  font-weight:600;
+  color: rgba(20,17,16,.45);
+  background: transparent;
+}
+.custom-scale .is-normal{
+  color: #fff;
+  background: var(--ink);
+  font-weight:800;
+}
+.custom-tip{
+  margin: 22px 0 4px;
+  font-weight:800;
+  font-size: .85rem;
+  letter-spacing:.02em;
+}
+.custom-note{
+  margin: 0 0 26px;
+  font-size: .72rem;
+  color: rgba(20,17,16,.45);
+}
+.rice-tip{
+  margin:0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(20,17,16,.1);
+  font-size: .85rem;
+  color: rgba(20,17,16,.75);
+  font-style: italic;
+}
+
+.iekei-final{
+  position:relative;
+  min-height: 62svh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  padding: 60px calc(22px + var(--safe-r)) calc(56px + var(--safe-b)) calc(22px + var(--safe-l));
+}
+.final-bg{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit: cover;
+  object-position: center;
+}
+.final-overlay{
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(10,10,10,.55) 0%, rgba(10,10,10,.82) 65%, var(--black) 100%);
+}
+.final-content{ position:relative; z-index:2; text-align:center; max-width: 460px; }
+.final-h2{
+  margin:0 0 22px;
+  color:#fff;
+  font-weight:900;
+  font-size: clamp(1.7rem, 7.5vw, 2.3rem);
+}
+.btn-explore{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  min-height: 52px;
+  padding: 15px 26px;
+  background: var(--red);
+  color:#fff;
+  border-radius: 14px;
+  text-decoration:none;
+  font-weight:800;
+  font-size: clamp(.86rem, 3.2vw, .98rem);
+  letter-spacing:.02em;
+  box-shadow: 0 10px 26px rgba(212,13,24,.45);
+}
+.btn-explore:hover{ background:#c00b15; }
+.btn-explore:focus-visible{ outline:2px solid #fff; outline-offset:3px; }
+
+/* ---------- Desktop ---------- */
+@media (min-width: 860px){
+  .screen--campaign{
+    display:flex; align-items:center; justify-content:center;
+  }
+  .campaign-inner{
+    max-width: 420px;
+    height: min(860px, 96svh);
+    border-radius: 28px;
+    box-shadow: 0 40px 100px rgba(0,0,0,.5);
+  }
+  .campaign-bg{ }
+  body[data-step="1"]{ background: #050505; }
+
+  .screen--iekei{ }
+  .iekei-intro, .iekei-custom{ }
+  .feature-grid{ max-width: 780px; }
+}
+
+/* ================================================================
+   V3 PAGE 2 — sample.pdf transfer
+   The poster keeps the source PDF's 1768:12731 layout ratio. All
+   coordinates are percentages of that frame so the 390px reference
+   remains stable at 375px and 430px as well.
+   ================================================================ */
+.screen--iekei{
+  min-height: 100svh;
+  background: #080808;
+  color: #fff;
+  overflow-x: hidden;
+}
+.p2-poster{
+  --impact: var(--typewriter);
+  --typewriter: 'American Typewriter', Georgia, 'Times New Roman', serif;
+  --body: var(--typewriter);
+  position: relative;
+  width: min(100%, 640px);
+  margin: 0 auto;
+  aspect-ratio: 1768 / 12731;
+  overflow: hidden;
+  background: #080808;
+  container-type: inline-size;
+  isolation: isolate;
+}
+.p2-poster img{
+  position: absolute;
+  display: block;
+  max-width: none;
+  height: auto;
+}
+.p2-top-logo{
+  z-index: 5;
+  left: 8%;
+  top: 1.0%;
+  width: 60%;
+}
+.p2-no-ramen{
+  z-index: 5;
+  left: 5%;
+  top: 7.6%;
+  width: 52%;
+}
+.p2-hero-img{
+  z-index: 1;
+  left: -14.93%;
+  top: .31%;
+  width: 134.45%;
+}
+.p2-tonkotsu{
+  z-index: 5;
+  right: 5.5%;
+  top: 15.0%;
+  width: 16.5%;
+}
+.p2-hero-copy{
+  position: absolute;
+  z-index: 6;
+  left: 7.9%;
+  top: 17.4%;
+  width: 88%;
+  margin: 0;
+  color: #fff;
+  font-family: var(--typewriter);
+  font-weight: 700;
+}
+.p2-hero-copy > p:first-child{
+  margin: 0;
+  font-size: 5.6cqw;
+  line-height: .92;
+}
+.p2-hero-copy h2{
+  margin: -.2% 0 0;
+  font-family: var(--typewriter);
+  font-size: 14.5cqw;
+  font-weight: 400;
+  line-height: .84;
+  letter-spacing: -.02em;
+  color: var(--red);
+}
+.p2-accent{
+  margin: 1.0% 0 0;
+  font-family: var(--typewriter);
+  font-size: 5.6cqw;
+  line-height: .96;
+  color: #fff;
+}
+.p2-chef{
+  z-index: 2;
+  left: 22.29%;
+  top: 22.60%;
+  width: 78.45%;
+}
+.p2-kansha{
+  z-index: 5;
+  left: 4.5%;
+  top: 27.5%;
+  width: 17.0%;
+}
+.p2-facts{
+  position: absolute;
+  z-index: 6;
+  left: 7.92%;
+  top: 32.62%;
+  display: grid;
+  gap: .22%;
+  color: rgba(255,255,255,.50);
+  font-family: var(--typewriter);
+  font-size: 3.96cqw;
+  line-height: 1.12;
+  font-weight: 400;
+}
+.p2-facts span{ display:block; }
+.p2-statement{
+  position: absolute;
+  z-index: 6;
+  left: 7.98%;
+  top: 36.92%;
+  margin: 0;
+  color: #fff;
+  font-family: var(--typewriter);
+  font-size: 5.6cqw;
+  line-height: .99;
+  font-weight: 700;
+}
+.p2-feature{
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  margin: 0;
+  color: #fff;
+  text-align: center;
+}
+.p2-feature img{
+  object-fit: cover;
+}
+.p2-feature h3,
+.p2-feature p{
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  width: 100%;
+  font-family: var(--typewriter);
+  font-weight: 400;
+}
+.p2-feature h3{
+  font-size: 5.6cqw;
+  line-height: .94;
+  color: var(--red);
+  white-space: nowrap;
+}
+.p2-feature h3 span{ color: var(--red); }
+.p2-feature p{
+  font-family: var(--typewriter);
+  font-size: 3.55cqw;
+  line-height: 1.06;
+  color: rgba(255,255,255,.54);
+}
+.p2-feature--01 img{ left: 6.45%; top: 40.67%; width: 87.16%; }
+.p2-feature--01{ z-index: 8; }
+.p2-feature--01 h3{ left: 12.44%; top: 46.20%; width: 75.12%; }
+.p2-feature--01 p{ left: 9%; top: 47.24%; width: 82%; }
+.p2-feature--02 img{ left: 5.88%; top: 47.93%; width: 88.29%; }
+.p2-feature--02{ z-index: 7; }
+.p2-feature--02 h3{ left: 16.23%; top: 54.58%; width: 67.65%; }
+.p2-feature--02 p{ left: 9%; top: 55.68%; width: 82%; }
+.p2-feature--03 img{ left: 6.45%; top: 56.88%; width: 87.16%; }
+.p2-feature--03{ z-index: 6; }
+.p2-feature--03 h3{ left: 9.16%; top: 63.11%; width: 81.67%; }
+.p2-feature--03 p{ left: 9%; top: 64.00%; width: 82%; }
+.p2-feature--04 img{ left: 6.17%; top: 65.35%; width: 86.54%; }
+.p2-feature--04{ z-index: 5; }
+.p2-feature--04 h3{ left: 14.82%; top: 71.42%; width: 70.42%; }
+.p2-feature--04 p{ left: 9%; top: 72.28%; width: 82%; }
+.p2-feature--05 img{ left: 7.13%; top: 73.91%; width: 85.75%; }
+.p2-feature--05{ z-index: 4; }
+.p2-feature--05 h3{ left: 13.97%; top: 79.76%; width: 72.06%; }
+.p2-feature--05 p{ left: 9%; top: 80.72%; width: 82%; }
+.p2-closing{
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  text-align: center;
+  color: #fff;
+}
+.p2-closing-copy,
+.p2-welcome{
+  position: absolute;
+  z-index: 5;
+  margin: 0;
+  font-family: var(--typewriter);
+  font-size: 5.6cqw;
+  line-height: .99;
+  font-weight: 700;
+}
+.p2-closing-copy{ left: 9.67%; top: 82.77%; width: 80.77%; }
+.p2-welcome{ left: 33.26%; top: 86.13%; width: 33.54%; }
+.p2-closing-logo{
+  z-index: 6;
+  left: 8.5%;
+  top: 87.05%;
+  width: 83%;
+}
+.p2-welcome-img{
+  z-index: 4;
+  left: 12.10%;
+  top: 87.66%;
+  width: 75.79%;
+}
+.p2-menu{
+  position: absolute;
+  z-index: 8;
+  left: 6.6%;
+  top: 96.92%;
+  width: 86.8%;
+  height: 2.15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7em;
+  border-radius: 999px;
+  background: var(--red);
+  color: #fff;
+  text-decoration: none;
+  font-family: var(--typewriter);
+  font-size: 5.6cqw;
+  line-height: 1;
+  font-weight: 700;
+}
+.p2-menu span{ font-family: var(--typewriter); }
+.p2-menu:focus-visible{
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .p2-poster *{ animation:none !important; transition:none !important; }
+}
