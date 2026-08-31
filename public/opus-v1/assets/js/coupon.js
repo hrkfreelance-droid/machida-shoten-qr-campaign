@@ -24,7 +24,6 @@
   if (!body || !offer || !markUsed || !modal || !groupCheck || !promotionCheck || !redeemSlider || !redeemStatus) return;
 
   var apiUrl = body.getAttribute('data-coupon-api-url') || '';
-  var apiKey = body.getAttribute('data-coupon-api-key') || '';
   var deviceStorageKey = 'machida_coupon_device_id';
   var deviceId = null;
   var currentCouponId = null;
@@ -141,9 +140,10 @@
   }
 
   async function request(payload) {
+    var headers = { 'Content-Type': 'application/json' };
     var response = await fetch(apiUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', apikey: apiKey },
+      headers: headers,
       body: JSON.stringify(payload),
       cache: 'no-store',
       credentials: 'omit'
@@ -324,7 +324,7 @@
 
   async function loadStatus() {
     deviceId = getDeviceId();
-    if (!apiUrl || !apiKey || !deviceId) {
+    if (!apiUrl || !deviceId) {
       showUnavailable('Reward status could not be verified.');
       return;
     }

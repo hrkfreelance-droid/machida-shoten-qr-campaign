@@ -1,0 +1,21 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "machida-qr-coupon",
+	"main": "cloudflare/worker.ts",
+	"compatibility_date": "2026-08-31",
+	"assets": {
+		"directory": "./public",
+		"binding": "ASSETS",
+		"run_worker_first": [
+			"/api/*"
+		]
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "machida-qr-coupon",
+			"database_id": "248e8ec4-18e8-447d-9919-fddc31642c36",
+			"migrations_dir": "cloudflare/migrations"
+		}
+	]
+}

@@ -5,7 +5,7 @@ including the white sweep effect across the `Free / Angkor / Draft` headline.
 
 ## Preview
 
-[Open the live GitHub Pages preview](https://hrkfreelance-droid.github.io/machida-shoten-qr-campaign/)
+[Open the live Cloudflare Worker](https://machida-qr-coupon.hrk-freelance.workers.dev/opus-v1/)
 
 ## GitHub
 
