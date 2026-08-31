@@ -13,6 +13,7 @@
 <link rel="preload" as="image" href="assets/img/hero-bowl.webp" imagesrcset="assets/img/hero-bowl-sm.webp 620w, assets/img/hero-bowl.webp 1100w" imagesizes="100vw">
 <link rel="stylesheet" href="assets/css/base.css?v=3">
 <link rel="stylesheet" href="assets/css/page1.css?v=3">
+<link rel="stylesheet" href="assets/css/mystery-box.css?v=1">
 </head>
 <body class="p1">
 
@@ -64,7 +65,46 @@
 
 </div>
 
+<section class="mystery-box-overlay" id="mysteryBoxOverlay" role="dialog" aria-labelledby="mysteryBoxTitle" aria-describedby="mysteryBoxSub" aria-modal="true">
+  <div class="mystery-box__atmosphere" aria-hidden="true">
+    <span class="mystery-box__halo"></span>
+    <span class="mystery-box__sweep"></span>
+    <div class="mystery-box__particles">
+      <i style="--x:15%;--y:28%;--d:.1s;--s:.7"></i><i style="--x:82%;--y:22%;--d:.35s;--s:1"></i>
+      <i style="--x:9%;--y:65%;--d:.7s;--s:.6"></i><i style="--x:90%;--y:61%;--d:.2s;--s:.8"></i>
+      <i style="--x:25%;--y:78%;--d:.55s;--s:.55"></i><i style="--x:74%;--y:76%;--d:.85s;--s:.75"></i>
+    </div>
+  </div>
+
+  <div class="mystery-box__content">
+    <p class="mystery-box__kicker">Exclusive QR</p>
+    <img class="mystery-box__logo" src="assets/img/logo-lockup.svg" width="980" height="152" alt="Machida Shoten — Japanese Ramen">
+
+    <div class="mystery-box__art" aria-hidden="true">
+      <span class="mystery-box__flash"></span>
+      <span class="mystery-box__rays"></span>
+      <span class="mystery-box__lid"><span></span></span>
+      <span class="mystery-box__body"><span class="mystery-box__stamp">町田商店<br><small>MACHIDA SHOTEN</small></span></span>
+    </div>
+
+    <div class="mystery-box__copy">
+      <h1 id="mysteryBoxTitle">Machida Mystery Box</h1>
+      <p id="mysteryBoxSub">Scan. Slide. Reveal.</p>
+    </div>
+
+    <div class="mystery-slider" id="mysterySlider" role="slider" tabindex="0" aria-label="Slide to open" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0 percent. Slide right to open.">
+      <span class="mystery-slider__track">
+        <span class="mystery-slider__fill"></span>
+        <span class="mystery-slider__label">Slide to Open</span>
+        <span class="mystery-slider__thumb" aria-hidden="true"><span>→</span></span>
+      </span>
+    </div>
+    <p class="mystery-box__hint">Slide right to open</p>
+  </div>
+</section>
+
 <div class="wipe" aria-hidden="true"></div>
 <script src="assets/js/nav.js?v=2" defer></script>
+<script src="assets/js/mystery-box.js?v=2" defer></script>
 </body>
 </html>
