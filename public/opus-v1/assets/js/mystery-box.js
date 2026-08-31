@@ -2,6 +2,8 @@
 (function () {
   var overlay = document.getElementById('mysteryBoxOverlay');
   var slider = document.getElementById('mysterySlider');
+  var boxOpenSound = document.getElementById('boxOpenSound');
+  var rewardSound = document.getElementById('rewardSound');
   var stage = document.querySelector('.stage');
   if (!overlay || !slider) return;
 
@@ -11,6 +13,24 @@
   var opened = false;
   var pointerId = null;
   var threshold = .88;
+
+  if (boxOpenSound) boxOpenSound.volume = .34;
+  if (rewardSound) rewardSound.volume = .26;
+
+  function prepareSound(audio) {
+    if (!audio) return;
+    try { audio.load(); } catch {}
+  }
+
+  function playSound(audio) {
+    if (!audio) return;
+    try {
+      audio.pause();
+      audio.currentTime = 0;
+      var playback = audio.play();
+      if (playback && typeof playback.catch === 'function') playback.catch(function () {});
+    } catch {}
+  }
 
   document.body.classList.add('mystery-box-active');
   if (stage) stage.setAttribute('inert', '');
@@ -40,9 +60,11 @@
     slider.classList.remove('is-dragging');
     slider.classList.add('is-complete');
     setProgress(1);
+    playSound(boxOpenSound);
     overlay.classList.add('is-opening');
 
     window.setTimeout(function () {
+      playSound(rewardSound);
       overlay.classList.add('is-revealed');
       overlay.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('mystery-box-active');
@@ -64,6 +86,8 @@
 
   slider.addEventListener('pointerdown', function (event) {
     if (opened) return;
+    prepareSound(boxOpenSound);
+    prepareSound(rewardSound);
     dragging = true;
     pointerId = event.pointerId;
     slider.classList.add('is-dragging');
@@ -86,6 +110,8 @@
 
   slider.addEventListener('keydown', function (event) {
     if (opened) return;
+    prepareSound(boxOpenSound);
+    prepareSound(rewardSound);
     var step = event.shiftKey ? .2 : .1;
     if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
       setProgress(progress + step);event.preventDefault();

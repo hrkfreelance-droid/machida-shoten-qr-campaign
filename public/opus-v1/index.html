@@ -13,7 +13,7 @@
 <link rel="preload" as="image" href="assets/img/hero-bowl.webp" imagesrcset="assets/img/hero-bowl-sm.webp 620w, assets/img/hero-bowl.webp 1100w" imagesizes="100vw">
 <link rel="stylesheet" href="assets/css/base.css?v=3">
 <link rel="stylesheet" href="assets/css/page1.css?v=3">
-<link rel="stylesheet" href="assets/css/mystery-box.css?v=1">
+<link rel="stylesheet" href="assets/css/mystery-box.css?v=2">
 </head>
 <body class="p1">
 
@@ -83,8 +83,9 @@
     <div class="mystery-box__art" aria-hidden="true">
       <span class="mystery-box__flash"></span>
       <span class="mystery-box__rays"></span>
-      <span class="mystery-box__lid"><span></span></span>
-      <span class="mystery-box__body"><span class="mystery-box__stamp">町田商店<br><small>MACHIDA SHOTEN</small></span></span>
+      <span class="mystery-box__asset-frame">
+        <img class="mystery-box__asset" src="assets/img/mystery-box.svg" width="668" height="692" alt="" decoding="async">
+      </span>
     </div>
 
     <div class="mystery-box__copy">
@@ -103,8 +104,10 @@
   </div>
 </section>
 
+<audio id="boxOpenSound" preload="auto" aria-hidden="true" src="assets/audio/box-open.wav"></audio>
+<audio id="rewardSound" preload="auto" aria-hidden="true" src="assets/audio/reward-chime.mp3"></audio>
 <div class="wipe" aria-hidden="true"></div>
 <script src="assets/js/nav.js?v=2" defer></script>
-<script src="assets/js/mystery-box.js?v=2" defer></script>
+<script src="assets/js/mystery-box.js?v=3" defer></script>
 </body>
 </html>
