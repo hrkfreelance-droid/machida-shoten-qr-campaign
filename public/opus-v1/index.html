@@ -13,8 +13,8 @@
 <link rel="preload" as="image" href="assets/img/hero-bowl.webp" imagesrcset="assets/img/hero-bowl-sm.webp 620w, assets/img/hero-bowl.webp 1100w" imagesizes="100vw">
 <link rel="stylesheet" href="assets/css/base.css?v=3">
 <link rel="stylesheet" href="assets/css/page1.css?v=3">
-<link rel="stylesheet" href="assets/css/mystery-box.css?v=3">
-<link rel="stylesheet" href="assets/css/coupon.css?v=1">
+<link rel="stylesheet" href="assets/css/mystery-box.css?v=4">
+<link rel="stylesheet" href="assets/css/coupon.css?v=2">
 </head>
 <body class="p1"
       data-coupon-api-url="https://qzlaqnteaxzkgqfhcxtu.supabase.co/functions/v1/coupon-api"
@@ -58,7 +58,7 @@
 
       <p class="offer__bar"><span>1 glass on us.</span></p>
 
-      <p class="offer__note">Show this screen at Machida&nbsp;Shoten Cambodia.</p>
+      <p class="offer__note">Show this screen to our staff.</p>
 
       <div class="coupon-meta" id="couponMeta" hidden>
         <span>Coupon ID</span>
@@ -79,6 +79,7 @@
 
     <div class="coupon-redeemed" id="couponRedeemed" hidden aria-live="polite">
       <p class="coupon-unavailable__eyebrow">Redeemed</p>
+      <p class="coupon-redeemed__status"><span aria-hidden="true">✓</span> Used</p>
       <p class="coupon-unavailable__title">Free Angkor Draft</p>
       <p class="coupon-redeemed__line"><span>Used</span><strong id="redeemedAt">—</strong></p>
       <p class="coupon-redeemed__line"><span>Available Again</span><strong id="availableAgainAt">—</strong></p>
@@ -90,7 +91,7 @@
       <ul>
         <li>One coupon per group per visit.</li>
         <li>Cannot be combined with other promotions.</li>
-        <li>Staff verification required.</li>
+        <li>Staff confirmation required.</li>
         <li>Reusable after 14 days.</li>
         <li>Duplicate or suspicious use may be refused.</li>
       </ul>
@@ -116,25 +117,26 @@
 
 </div>
 
-<div class="staff-modal" id="staffModal" hidden role="dialog" aria-modal="true" aria-labelledby="staffModalTitle">
-  <div class="staff-modal__panel">
-    <button class="staff-modal__close" id="cancelRedeemTop" type="button" aria-label="Close staff verification">×</button>
-    <p class="staff-modal__eyebrow">Staff Only</p>
-    <h2 id="staffModalTitle">Staff Check</h2>
-    <p class="staff-modal__lead">One coupon per group.</p>
-    <p class="staff-modal__copy">Confirm that this group has not already redeemed this QR offer during this visit.</p>
+<div class="redeem-modal" id="redeemModal" hidden role="dialog" aria-modal="true" aria-labelledby="redeemModalTitle">
+  <div class="redeem-modal__panel">
+    <button class="redeem-modal__close" id="cancelRedeemTop" type="button" aria-label="Cancel redemption">×</button>
+    <p class="redeem-modal__eyebrow">Staff Confirmation</p>
+    <h2 id="redeemModalTitle">Use This Coupon?</h2>
+    <p class="redeem-modal__lead">Please ask our staff to complete the slider below.</p>
+    <p class="redeem-modal__copy">Once used, this reward will be unavailable for 14 days.</p>
 
-    <label class="staff-check"><input type="checkbox" id="groupCheck"> <span>Group has not redeemed this offer during this visit.</span></label>
-    <label class="staff-check"><input type="checkbox" id="promotionCheck"> <span>No other promotion, discount, voucher or coupon is being used.</span></label>
+    <label class="redeem-check"><input type="checkbox" id="groupCheck"> <span>One coupon per group per visit.</span></label>
+    <label class="redeem-check"><input type="checkbox" id="promotionCheck"> <span>Cannot be combined with any other promotion, discount, voucher or coupon.</span></label>
 
-    <label class="staff-code-label" for="staffCode">Enter Staff Code</label>
-    <input class="staff-code-input" id="staffCode" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="32">
-    <p class="staff-modal__error" id="staffError" role="status" aria-live="polite"></p>
-
-    <div class="staff-modal__actions">
-      <button class="coupon-action coupon-action--confirm" id="confirmRedeem" type="button" disabled>Confirm &amp; Redeem</button>
-      <button class="staff-modal__cancel" id="cancelRedeem" type="button">Cancel</button>
+    <div class="redeem-slider is-disabled" id="redeemSlider" role="slider" tabindex="0" aria-label="Slide to mark as used" aria-disabled="true" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0 percent. Complete the staff confirmation first.">
+      <span class="redeem-slider__track">
+        <span class="redeem-slider__fill"></span>
+        <span class="redeem-slider__label">Slide to Mark as Used</span>
+        <span class="redeem-slider__thumb" aria-hidden="true"><span>→</span></span>
+      </span>
     </div>
+    <p class="redeem-modal__status" id="redeemStatus" role="status" aria-live="polite"></p>
+    <button class="redeem-modal__cancel" id="cancelRedeem" type="button">Cancel</button>
   </div>
 </div>
 
@@ -181,7 +183,7 @@
 <audio id="rewardSound" preload="auto" aria-hidden="true" src="assets/audio/reward-chime.mp3"></audio>
 <div class="wipe" aria-hidden="true"></div>
 <script src="assets/js/nav.js?v=2" defer></script>
-<script src="assets/js/mystery-box.js?v=4" defer></script>
-<script src="assets/js/coupon.js?v=1" defer></script>
+<script src="assets/js/mystery-box.js?v=5" defer></script>
+<script src="assets/js/coupon.js?v=2" defer></script>
 </body>
 </html>

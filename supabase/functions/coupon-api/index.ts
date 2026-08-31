@@ -45,15 +45,6 @@ async function hmacHex(secret: string, value: string): Promise<string> {
   return hex(new Uint8Array(signature));
 }
 
-function safeEqual(left: string, right: string): boolean {
-  if (left.length !== right.length) return false;
-  let difference = 0;
-  for (let index = 0; index < left.length; index += 1) {
-    difference |= left.charCodeAt(index) ^ right.charCodeAt(index);
-  }
-  return difference === 0;
-}
-
 function requiredEnv(name: string): string {
   const value = Deno.env.get(name);
   if (!value) throw new Error(`missing_${name}`);
@@ -153,52 +144,14 @@ Deno.serve(async (request: Request) => {
 
     const couponId = body.coupon_id;
     const staffActionId = body.staff_action_id;
-    const staffCode = body.staff_code;
     const groupConfirmed = body.group_confirmed;
     const noOtherPromotion = body.no_other_promotion;
     if (
       typeof couponId !== "string" || !COUPON_ID_RE.test(couponId) ||
-      !isUuid(staffActionId) || typeof staffCode !== "string" ||
-      staffCode.trim().length === 0 || groupConfirmed !== true ||
-      noOtherPromotion !== true
+      !isUuid(staffActionId) || typeof groupConfirmed !== "boolean" ||
+      typeof noOtherPromotion !== "boolean"
     ) {
       return fail("INVALID_REQUEST", 400);
-    }
-
-    let staffHash: string;
-    let staffPepper: string;
-    try {
-      staffHash = requiredEnv("MACHIDA_STAFF_CODE_HASH");
-      staffPepper = requiredEnv("MACHIDA_STAFF_CODE_PEPPER");
-    } catch {
-      return fail("STAFF_VERIFICATION_REQUIRED", 503);
-    }
-
-    const rateKeyHash = await hmacHex(
-      riskSecret,
-      `staff:${deviceId}:${ipHash}`,
-    );
-    const suppliedStaffHash = await hmacHex(staffPepper, staffCode.trim());
-    const staffCodeValid = safeEqual(suppliedStaffHash, staffHash.trim().toLowerCase());
-    const staffAttempt = await rpc(client, "record_staff_attempt", {
-      p_rate_key_hash: rateKeyHash,
-      p_device_id: deviceId,
-      p_coupon_id: couponId,
-      p_staff_action_id: staffActionId,
-      p_ip_hash: ipHash,
-      p_user_agent_hash: userAgentHash,
-      p_success: staffCodeValid,
-    });
-
-    if (staffAttempt.status === "STAFF_LOCKED") {
-      return fail("STAFF_LOCKED", 429, {
-        locked_until: staffAttempt.locked_until,
-      });
-    }
-    if (!staffCodeValid || staffAttempt.status !== "STAFF_OK") {
-      return fail("INVALID_STAFF_CODE", 401, {
-        locked_until: staffAttempt.locked_until ?? null,
-      });
     }
 
     const redemption = await rpc(client, "redeem_coupon", {
@@ -207,12 +160,13 @@ Deno.serve(async (request: Request) => {
       p_staff_action_id: staffActionId,
       p_ip_hash: ipHash,
       p_user_agent_hash: userAgentHash,
-      p_group_confirmed: true,
-      p_no_other_promotion: true,
+      p_group_confirmed: groupConfirmed,
+      p_no_other_promotion: noOtherPromotion,
     });
     if (redemption.status === "REDEEMED") return json({ ok: true, ...redemption });
     if (redemption.status === "ALREADY_REDEEMED") return fail("ALREADY_REDEEMED", 409, redemption);
-    if (redemption.status === "REVIEW_REQUIRED") return fail("STAFF_VERIFICATION_REQUIRED", 409, redemption);
+    if (redemption.status === "REVIEW_REQUIRED") return fail("REVIEW_REQUIRED", 409, redemption);
+    if (redemption.status === "DUPLICATE_REQUEST") return fail("DUPLICATE_REQUEST", 409, redemption);
     return fail("INVALID_COUPON", 409, redemption);
   } catch {
     // Do not disclose database errors or request contents. Redemption is fail-closed.

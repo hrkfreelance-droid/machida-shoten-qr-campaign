@@ -37,6 +37,10 @@
 
   document.body.classList.add('mystery-box-active');
   if (stage) stage.setAttribute('inert', '');
+  overlay.classList.add('is-intro');
+  window.setTimeout(function () {
+    if (!opened) overlay.classList.add('is-idle');
+  }, 1900);
 
   function maybePlayRewardSound() {
     if (!revealDone || rewardSoundPlayed || couponState !== 'ACTIVE') return;

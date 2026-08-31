@@ -50,6 +50,29 @@ body.mystery-box-active{overflow:hidden}
 }
 .mystery-box__logo{width:min(64vw,245px);height:auto;margin-inline:auto;opacity:.96}
 
+/* Short, staggered arrival sequence for the QR-first experience. */
+.mystery-box-overlay.is-intro .mystery-box__kicker,
+.mystery-box-overlay.is-intro .mystery-box__logo,
+.mystery-box-overlay.is-intro .mystery-box__art,
+.mystery-box-overlay.is-intro .mystery-box__copy h1,
+.mystery-box-overlay.is-intro .mystery-box__copy p,
+.mystery-box-overlay.is-intro .mystery-slider,
+.mystery-box-overlay.is-intro .mystery-box__hint{
+  opacity:0;transform:translateY(12px);
+}
+.mystery-box-overlay.is-intro .mystery-box__art{transform:translateY(16px) scale(.96)}
+.mystery-box-overlay.is-intro .mystery-slider{transform:translateY(10px)}
+.mystery-box-overlay.is-intro .mystery-box__hint{transform:translateY(8px)}
+.mystery-box-overlay.is-intro .mystery-box__halo{animation:mysteryIntroAura .9s ease-out both,mysteryBreathe 5.5s .9s ease-in-out infinite}
+.mystery-box-overlay.is-intro .mystery-box__kicker{animation:mysteryIntroRise .42s .12s cubic-bezier(.2,.75,.25,1) both}
+.mystery-box-overlay.is-intro .mystery-box__logo{animation:mysteryIntroRise .46s .28s cubic-bezier(.2,.75,.25,1) both}
+.mystery-box-overlay.is-intro .mystery-box__art{animation:mysteryIntroArt .58s .52s cubic-bezier(.16,.84,.3,1) both}
+.mystery-box-overlay.is-intro .mystery-box__copy h1{animation:mysteryIntroRise .46s .84s cubic-bezier(.2,.75,.25,1) both}
+.mystery-box-overlay.is-intro .mystery-box__copy p{animation:mysteryIntroRise .42s 1.04s cubic-bezier(.2,.75,.25,1) both}
+.mystery-box-overlay.is-intro .mystery-slider{animation:mysteryIntroRise .48s 1.2s cubic-bezier(.2,.75,.25,1) both}
+.mystery-box-overlay.is-intro .mystery-box__hint{animation:mysteryIntroRise .38s 1.46s cubic-bezier(.2,.75,.25,1) both}
+.mystery-box-overlay.is-intro .mystery-slider__thumb{animation:mysterySliderNudge .82s 1.5s ease-in-out both}
+
 .mystery-box__art{
   position:relative;width:min(74vw,286px);height:clamp(210px,31vh,252px);
   margin:13px auto 5px;perspective:900px;
@@ -105,6 +128,11 @@ body.mystery-box-active{overflow:hidden}
 }
 .mystery-slider:focus-visible{outline:2px solid var(--red-hot);outline-offset:4px}
 .mystery-slider__track{position:relative;display:block;width:100%;height:100%;overflow:hidden;border-radius:999px}
+.mystery-slider__track::after{
+  content:"";position:absolute;z-index:1;top:-20%;bottom:-20%;left:-42%;width:30%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.18),transparent);
+  transform:translateX(-160%) skewX(-18deg);opacity:0;pointer-events:none;
+}
 .mystery-slider__fill{
   position:absolute;inset:0 auto 0 0;width:var(--mystery-fill,0%);border-radius:999px;
   background:linear-gradient(90deg,rgba(215,19,42,.35),rgba(255,43,61,.95));
@@ -112,12 +140,12 @@ body.mystery-box-active{overflow:hidden}
 }
 .mystery-slider.is-dragging .mystery-slider__fill,.mystery-slider.is-dragging .mystery-slider__thumb{transition:none}
 .mystery-slider__label{
-  position:absolute;inset:0;display:grid;place-items:center;padding-left:28px;
+  position:absolute;z-index:2;inset:0;display:grid;place-items:center;padding-left:28px;
   font-family:var(--display);font-size:var(--t1);letter-spacing:.06em;text-transform:uppercase;
   color:rgba(255,255,255,.86);pointer-events:none;
 }
 .mystery-slider__thumb{
-  position:absolute;left:var(--mystery-thumb-x,0px);top:0;width:52px;height:52px;
+  position:absolute;z-index:3;left:var(--mystery-thumb-x,0px);top:0;width:52px;height:52px;
   display:grid;place-items:center;border:1px solid rgba(255,255,255,.95);border-radius:50%;
   color:#fff;background:var(--red);box-shadow:0 5px 16px rgba(0,0,0,.45),0 0 20px rgba(255,43,61,.45);
   transition:left .26s cubic-bezier(.2,.8,.25,1);pointer-events:none;
@@ -129,6 +157,24 @@ body.mystery-box-active{overflow:hidden}
   text-transform:uppercase;color:rgba(255,255,255,.42);
 }
 
+/* The box stays gently alive after the intro, without competing with the CTA. */
+.mystery-box-overlay.is-idle .mystery-box__art{animation:mysteryBoxIdle 3.4s ease-in-out infinite}
+.mystery-box-overlay.is-idle .mystery-box__asset-frame::before{animation:mysteryGlowPulse 3.8s ease-in-out infinite}
+.mystery-box-overlay.is-idle .mystery-slider__track::after{animation:mysterySliderShimmer 5.8s 2.2s ease-in-out infinite}
+.mystery-box-overlay.is-idle .mystery-slider__thumb{animation:mysteryThumbGlow 5.8s 2.2s ease-in-out infinite}
+.mystery-box-overlay.is-opening .mystery-box__art,
+.mystery-box-overlay.is-opening .mystery-box__asset-frame::before,
+.mystery-box-overlay.is-opening .mystery-slider__track::after,
+.mystery-box-overlay.is-opening .mystery-slider__thumb{animation:none}
+
+@keyframes mysteryIntroAura{0%{opacity:0;transform:translate(-50%,-50%) scale(.82)}100%{opacity:.62;transform:translate(-50%,-50%) scale(.94)}}
+@keyframes mysteryIntroRise{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes mysteryIntroArt{0%{opacity:0;transform:translateY(16px) scale(.96)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes mysteryBoxIdle{0%,100%{opacity:1;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
+@keyframes mysteryGlowPulse{0%,100%{opacity:.58;transform:scale(.96)}50%{opacity:.82;transform:scale(1.03)}}
+@keyframes mysterySliderNudge{0%,100%{transform:translateX(0)}42%{transform:translateX(5px)}68%{transform:translateX(1px)}}
+@keyframes mysterySliderShimmer{0%,65%{opacity:0;transform:translateX(-160%) skewX(-18deg)}72%{opacity:.7}100%{opacity:0;transform:translateX(520%) skewX(-18deg)}}
+@keyframes mysteryThumbGlow{0%,65%,100%{box-shadow:0 5px 16px rgba(0,0,0,.45),0 0 20px rgba(255,43,61,.45)}78%{box-shadow:0 5px 16px rgba(0,0,0,.45),0 0 27px rgba(255,43,61,.7)}}
 @keyframes mysteryBreathe{0%,100%{opacity:.62;transform:translate(-50%,-50%) scale(.94)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}}
 @keyframes mysterySweep{0%,72%{opacity:0;transform:translateX(-85%)}78%{opacity:1}100%{opacity:0;transform:translateX(85%)}}
 @keyframes mysterySpark{0%{opacity:0;transform:translateY(0) scale(var(--s))}25%{opacity:1}100%{opacity:0;transform:translateY(-36px) scale(.2)}}
@@ -145,7 +191,22 @@ body.mystery-box-active{overflow:hidden}
 }
 
 @media (prefers-reduced-motion:reduce){
-  .mystery-box__halo,.mystery-box__sweep{animation:none}
+  .mystery-box-overlay.is-intro .mystery-box__halo{animation:none;opacity:.62;transform:translate(-50%,-50%) scale(.94)}
+  .mystery-box-overlay.is-intro .mystery-box__kicker,
+  .mystery-box-overlay.is-intro .mystery-box__logo,
+  .mystery-box-overlay.is-intro .mystery-box__art,
+  .mystery-box-overlay.is-intro .mystery-box__copy h1,
+  .mystery-box-overlay.is-intro .mystery-box__copy p,
+  .mystery-box-overlay.is-intro .mystery-slider,
+  .mystery-box-overlay.is-intro .mystery-box__hint{
+    animation:none;opacity:1;transform:none;
+  }
+  .mystery-box__sweep,
+  .mystery-box-overlay.is-idle .mystery-box__art,
+  .mystery-box-overlay.is-idle .mystery-box__asset-frame::before,
+  .mystery-box-overlay.is-idle .mystery-slider__track::after,
+  .mystery-box-overlay.is-idle .mystery-slider__thumb{animation:none}
+  .mystery-slider__track::after{opacity:0}
   .mystery-box-overlay.is-opening .mystery-box__particles i,
   .mystery-box-overlay.is-opening .mystery-box__flash,
   .mystery-box-overlay.is-opening .mystery-box__rays,
