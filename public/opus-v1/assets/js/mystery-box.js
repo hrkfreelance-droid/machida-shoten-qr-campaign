@@ -13,6 +13,9 @@
   var opened = false;
   var pointerId = null;
   var threshold = .88;
+  var couponState = 'PENDING';
+  var revealDone = false;
+  var rewardSoundPlayed = false;
 
   if (boxOpenSound) boxOpenSound.volume = .34;
   if (rewardSound) rewardSound.volume = .26;
@@ -34,6 +37,17 @@
 
   document.body.classList.add('mystery-box-active');
   if (stage) stage.setAttribute('inert', '');
+
+  function maybePlayRewardSound() {
+    if (!revealDone || rewardSoundPlayed || couponState !== 'ACTIVE') return;
+    rewardSoundPlayed = true;
+    playSound(rewardSound);
+  }
+
+  document.addEventListener('machida:coupon-state', function (event) {
+    couponState = (event.detail || {}).status || 'PENDING';
+    maybePlayRewardSound();
+  });
 
   function setProgress(value) {
     progress = Math.max(0, Math.min(1, value));
@@ -64,7 +78,8 @@
     overlay.classList.add('is-opening');
 
     window.setTimeout(function () {
-      playSound(rewardSound);
+      revealDone = true;
+      maybePlayRewardSound();
       overlay.classList.add('is-revealed');
       overlay.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('mystery-box-active');

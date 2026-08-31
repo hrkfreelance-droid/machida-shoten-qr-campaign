@@ -13,9 +13,12 @@
 <link rel="preload" as="image" href="assets/img/hero-bowl.webp" imagesrcset="assets/img/hero-bowl-sm.webp 620w, assets/img/hero-bowl.webp 1100w" imagesizes="100vw">
 <link rel="stylesheet" href="assets/css/base.css?v=3">
 <link rel="stylesheet" href="assets/css/page1.css?v=3">
-<link rel="stylesheet" href="assets/css/mystery-box.css?v=2">
+<link rel="stylesheet" href="assets/css/mystery-box.css?v=3">
+<link rel="stylesheet" href="assets/css/coupon.css?v=1">
 </head>
-<body class="p1">
+<body class="p1"
+      data-coupon-api-url="https://qzlaqnteaxzkgqfhcxtu.supabase.co/functions/v1/coupon-api"
+      data-coupon-api-key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6bGFxbnRlYXh6a2dxZmhjeHR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxNDI4ODUsImV4cCI6MjEwMzcxODg4NX0.4YMKz3jORgTVmLxztl_Z7o8GIywq-eQB0oCTsgtGrdw">
 
 <div class="stage">
 
@@ -38,23 +41,71 @@
     <img class="bar__logo" src="assets/img/logo-lockup.svg" alt="Machida Shoten — Japanese Ramen" width="980" height="152">
   </header>
 
-  <main class="offer">
+  <main class="offer" id="couponOffer" data-coupon-state="checking">
     <a class="exit exit--inline" href="https://machida-shoten-cambodia.netlify.app/" target="_blank" rel="noopener">
       Menu &amp; Location <span aria-hidden="true">↗</span>
     </a>
 
-    <p class="offer__eyebrow"><span>Exclusive QR Offer</span></p>
+    <div class="coupon-reward" id="couponReward">
+      <p class="offer__eyebrow"><span>Exclusive QR Offer</span></p>
 
-    <h1 class="offer__head">
-      <span class="rv"><span>Free</span></span>
-      <span class="rv"><span>Angkor</span></span>
-      <span class="rv"><span>Draft</span></span>
-      <span class="sweep" aria-hidden="true"></span>
-    </h1>
+      <h1 class="offer__head">
+        <span class="rv"><span>Free</span></span>
+        <span class="rv"><span>Angkor</span></span>
+        <span class="rv"><span>Draft</span></span>
+        <span class="sweep" aria-hidden="true"></span>
+      </h1>
 
-    <p class="offer__bar"><span>1 glass on us.</span></p>
+      <p class="offer__bar"><span>1 glass on us.</span></p>
 
-    <p class="offer__note">Show this screen at Machida&nbsp;Shoten Cambodia.</p>
+      <p class="offer__note">Show this screen at Machida&nbsp;Shoten Cambodia.</p>
+
+      <div class="coupon-meta" id="couponMeta" hidden>
+        <span>Coupon ID</span>
+        <strong id="couponId">—</strong>
+      </div>
+
+      <button class="coupon-action" id="markUsedButton" type="button" disabled>
+        Mark as Used
+      </button>
+    </div>
+
+    <div class="coupon-unavailable" id="couponUnavailable" hidden aria-live="polite">
+      <p class="coupon-unavailable__eyebrow">Reward Status</p>
+      <p class="coupon-unavailable__title" id="couponUnavailableTitle">Reward Temporarily Unavailable</p>
+      <p class="coupon-unavailable__copy" id="couponUnavailableCopy">We couldn’t verify your reward right now. Please try again later.</p>
+      <button class="coupon-retry" id="retryStatus" type="button">Try Again</button>
+    </div>
+
+    <div class="coupon-redeemed" id="couponRedeemed" hidden aria-live="polite">
+      <p class="coupon-unavailable__eyebrow">Redeemed</p>
+      <p class="coupon-unavailable__title">Free Angkor Draft</p>
+      <p class="coupon-redeemed__line"><span>Used</span><strong id="redeemedAt">—</strong></p>
+      <p class="coupon-redeemed__line"><span>Available Again</span><strong id="availableAgainAt">—</strong></p>
+      <p class="coupon-unavailable__copy">Thank you. See you again soon.</p>
+    </div>
+
+    <section class="coupon-terms" aria-label="Terms and Conditions">
+      <p class="coupon-terms__label">Terms</p>
+      <ul>
+        <li>One coupon per group per visit.</li>
+        <li>Cannot be combined with other promotions.</li>
+        <li>Staff verification required.</li>
+        <li>Reusable after 14 days.</li>
+        <li>Duplicate or suspicious use may be refused.</li>
+      </ul>
+      <details>
+        <summary>Terms &amp; Conditions</summary>
+        <ul>
+          <li>One free Angkor Draft per coupon.</li>
+          <li>Cannot be combined with other promotions, discounts, vouchers or coupons.</li>
+          <li>Multiple coupons from the same group cannot be used together.</li>
+          <li>Screenshots, copied or transferred coupons are not accepted.</li>
+          <li>Once redeemed, the reward cannot be used again for 14 days.</li>
+          <li>Machida Shoten may refuse duplicate, suspicious or abusive redemptions.</li>
+        </ul>
+      </details>
+    </section>
 
     <a class="cta" href="iekei.html" data-nav>
       What is Yokohama Style Ramen? <span class="cta__arrow" aria-hidden="true">→</span>
@@ -63,6 +114,28 @@
     <p class="offer__fine">Campaign details to be confirmed.</p>
   </main>
 
+</div>
+
+<div class="staff-modal" id="staffModal" hidden role="dialog" aria-modal="true" aria-labelledby="staffModalTitle">
+  <div class="staff-modal__panel">
+    <button class="staff-modal__close" id="cancelRedeemTop" type="button" aria-label="Close staff verification">×</button>
+    <p class="staff-modal__eyebrow">Staff Only</p>
+    <h2 id="staffModalTitle">Staff Check</h2>
+    <p class="staff-modal__lead">One coupon per group.</p>
+    <p class="staff-modal__copy">Confirm that this group has not already redeemed this QR offer during this visit.</p>
+
+    <label class="staff-check"><input type="checkbox" id="groupCheck"> <span>Group has not redeemed this offer during this visit.</span></label>
+    <label class="staff-check"><input type="checkbox" id="promotionCheck"> <span>No other promotion, discount, voucher or coupon is being used.</span></label>
+
+    <label class="staff-code-label" for="staffCode">Enter Staff Code</label>
+    <input class="staff-code-input" id="staffCode" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="32">
+    <p class="staff-modal__error" id="staffError" role="status" aria-live="polite"></p>
+
+    <div class="staff-modal__actions">
+      <button class="coupon-action coupon-action--confirm" id="confirmRedeem" type="button" disabled>Confirm &amp; Redeem</button>
+      <button class="staff-modal__cancel" id="cancelRedeem" type="button">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <section class="mystery-box-overlay" id="mysteryBoxOverlay" role="dialog" aria-labelledby="mysteryBoxTitle" aria-describedby="mysteryBoxSub" aria-modal="true">
@@ -108,6 +181,7 @@
 <audio id="rewardSound" preload="auto" aria-hidden="true" src="assets/audio/reward-chime.mp3"></audio>
 <div class="wipe" aria-hidden="true"></div>
 <script src="assets/js/nav.js?v=2" defer></script>
-<script src="assets/js/mystery-box.js?v=3" defer></script>
+<script src="assets/js/mystery-box.js?v=4" defer></script>
+<script src="assets/js/coupon.js?v=1" defer></script>
 </body>
 </html>
